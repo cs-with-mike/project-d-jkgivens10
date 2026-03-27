@@ -3,7 +3,7 @@
  * CS 030 Project D
  *
  * @author Assistant Professor Mike Ryu mryu@westmont.edu
- * @author Boaty McBoatface bmcboatface@westmont.edu TODO: replace this with your info.
+ * @author Brennan Givens bgivens@westmont.edu
  */
 
 
@@ -63,9 +63,39 @@ public class MazeGenerator {
     return this.renderTarget;
   }
 
-  // TODO: generateMaze() -- see spec (Javadoc) for details.
+  /**
+   * Initializes the Maze using Maze.initialize() then calls the recursive
+   * generateMaze(Cell) method with the initial Cell to begin path generation.
+   */
+  public void generateMaze() {
+    maze.initialize();
+    generateMaze(maze.cells[r0][c0]);
+  }
 
-  // TODO: generateMaze(Cell currCell)  -- see spec (Javadoc) for details.
+  /**
+   * Recursive maze generation algorithm.
+   * Marks the current cell as a path, displays the maze, then recursively
+   * visits all unvisited (wall) neighbors in order.
+   *
+   * @param currCell current Cell to continue the maze path generation from
+   */
+  public void generateMaze(Cell currCell) {
+    currCell.setPath(true);
+
+    displayMaze(maze);
+
+    ArrayList<Cell> neighbors = maze.getNeighbors(currCell);
+    if (isShuffle) {
+      Collections.shuffle(neighbors);
+    }
+    for (Cell neighbor : neighbors) {
+      if (!neighbor.isPath()) {
+        maze.connectNeighbors(currCell, neighbor);
+        generateMaze(neighbor);
+      }
+    }
+  }
+
 
   /**
    * Displays the given {@link Maze} at its current state to both to the GUI window and console.
