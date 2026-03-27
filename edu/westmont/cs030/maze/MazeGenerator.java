@@ -63,11 +63,22 @@ public class MazeGenerator {
     return this.renderTarget;
   }
 
+  /**
+   * Initializes the Maze using Maze.initialize() then calls the recursive
+   * generateMaze(Cell) method with the initial Cell to begin path generation.
+   */
   public void generateMaze() {
     maze.initialize();
     generateMaze(maze.cells[r0][c0]);
   }
 
+  /**
+   * Recursive maze generation algorithm.
+   * Marks the current cell as a path, displays the maze, then recursively
+   * visits all unvisited (wall) neighbors in order.
+   *
+   * @param currCell current Cell to continue the maze path generation from
+   */
   public void generateMaze(Cell currCell) {
     currCell.setPath(true);
 

@@ -21,6 +21,13 @@ public class Maze {
   public final Cell[][] cells;
 
 
+  /**
+   * Initializes the maze given the number of rows and columns.
+   *
+   * @param numRows number of rows
+   * @param numCols number of columns
+   * @throws IllegalArgumentException if numRows or numCols is less than 1
+   */
   public Maze(int numRows, int numCols) {
     if(numRows < 1 || numCols < 1) {
       throw new IllegalArgumentException("Maze dimensions must be at least 1x1.");
@@ -29,6 +36,9 @@ public class Maze {
     initialize();
   }
 
+  /**
+   * Resets every cell in this maze to a new Cell configured as a wall.
+   */
   public void initialize() {
     for (int r =0; r < numRows(); r++) {
       for (int c = 0; c < numCols(); c++) {
@@ -38,14 +48,32 @@ public class Maze {
   }
 
 
+  /**
+   * Returns the number of rows
+   *
+   * @return number of rows
+   */
   public int numRows() {
     return cells.length;
   }
 
+  /**
+   * Returns the number of columns
+   *
+   * @return number of columns
+   */
   public int numCols() {
     return cells[0].length;
   }
 
+  /**
+   * Given a Cell, returns a neighboring Cell in the given Direction.
+   * Returns null if there is no neighbor that exists within the maze bounds.
+   *
+   * @param cell Cell whose neighbor in the given Direction is to be retrieved
+   * @param dir  Direction of the neighbor from the perspective of the Cell given
+   * @return the neighboring Cell if one exists, null otherwise
+   */
   public Cell getNeighbor(Cell cell, Direction dir) {
     try {
       int neighborRow = cell.getNeighborRowIndex(dir, numRows());
@@ -56,7 +84,12 @@ public class Maze {
     }
   }
 
-
+  /**
+   * Given a Cell, returns an ArrayList of all existing neighbors in all Directions.
+   *
+   * @param cell the Cell whose neighbors are to be retrieved
+   * @return ArrayList of neighboring cells that exist within the maze bounds
+   */
   public ArrayList<Cell> getNeighbors(Cell cell) {
     ArrayList<Cell> neighbors = new ArrayList<>();
     for (Direction dir : Direction.values()) {
@@ -68,12 +101,25 @@ public class Maze {
     return neighbors;
   }
 
+  /**
+   * Given two neighboring Cells, sets the Cell between them as a path,
+   *  connecting the two neighboring Cells together.
+   *
+   * @param origin   one of the two neighboring Cells
+   * @param neighbor another one of the two neighboring Cells
+   */
   public void connectNeighbors(Cell origin, Cell neighbor) {
     int wallRow = (origin.rowIndex() + neighbor.rowIndex()) / 2;
     int wallCol = (origin.colIndex() + neighbor.colIndex()) / 2;
     cells[wallRow][wallCol].setPath(true);
   }
 
+  /**
+   * Returns a string representation of this maze used for rendering.
+   * Gives the maze a wall around it.
+   *
+   * @return string representation of this maze
+   */
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
